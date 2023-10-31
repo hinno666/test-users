@@ -1,0 +1,36 @@
+@import "../../index.scss";
+
+.dashboard {
+    background-color: $bgContent;
+    box-shadow: $boxShadow;
+    border-radius: $borderRadius;
+    min-height: 525px;
+    display: flex;
+    .sidebar {
+        position: relative;
+        border-right: 1px solid #e0e0e0;
+        padding: 25px;
+        .sidebar__title {
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 140%;
+            margin-bottom: 15px;
+        }
+        .sidebar__subtitle {
+            color: $grey;
+        }
+        .sidebar__form {
+            margin-bottom: 30px;
+            .sidebar__input {
+                border-radius: 8px;
+                border: 1.5px solid $lightGrey;
+                background: $white;
+                padding: 16px 25px;
+            }
+        }
+    }
+    .user {
+        padding: 25px;
+    }
+}

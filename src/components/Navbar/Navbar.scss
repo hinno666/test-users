@@ -1,0 +1,14 @@
+@import '../../index.scss';
+
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 0 26px;
+    .nav__logo {
+        color: $red;
+        font-size: 32px;
+        font-weight: 700;
+    }
+}
+
