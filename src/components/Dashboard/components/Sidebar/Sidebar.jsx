@@ -17,14 +17,21 @@ export const Sidebar = () => {
         const searchUsers = async () => {
             try {
                 setIsLoading(true);
-                const searchArray = searchTerm.split(',').map(item => `id=${item.trim()}`).join('&');
+                const searchArray = searchTerm.split(',').map(item => {
+                    if (!isNaN(+item)) {
+                        return `id=${item.trim()}`;
+                    } else {
+                        return `username_like=${item.trim()}`;
+                    }
+                }).join('&');
                 const response = await customFetch.get(`/users?${searchArray}`);
                 const data = response.data;
+                console.log(data);
                 setUsers(data);
-                setIsLoading(false);
                 setIsError(false);
             } catch (error) {
                 setIsError(true);
+            } finally {
                 setIsLoading(false);
             }
         }
@@ -46,13 +53,16 @@ export const Sidebar = () => {
             </form>
             <p className="sidebar__title">Результаты</p>
             {isError ? (
-                <p>Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.</p>
-            ) : users.length < 1 ? (
+                <p className="sidebar__subtitle">Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.</p>
+            ) : searchTerm === '' ? (
                 <p className="sidebar__subtitle">начните поиск</p>
             ) : (
-                isLoading ? <Loader /> : users.map((user) => {
-                    return <p key={user.id}>{user.name}</p>
-                })
+                users.length < 1 ? (
+                    <p className="sidebar__subtitle">не найдено</p>
+                ) :
+                    isLoading ? <Loader /> : users.map((user) => {
+                        return <p key={user.id}>{user.username}</p>
+                    })
             )}
         </aside>
     )
