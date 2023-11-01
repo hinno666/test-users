@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { customFetch } from "../../../../utils/utils";
-import { Loader } from "../../../Loader/Loader";
+import { UsersList } from "./UsersList";
+import { searchUserBy } from "../../helpers/SearchUserBy";
 
 export const Sidebar = () => {
 
@@ -17,16 +18,8 @@ export const Sidebar = () => {
         const searchUsers = async () => {
             try {
                 setIsLoading(true);
-                const searchArray = searchTerm.split(',').map(item => {
-                    if (!isNaN(+item)) {
-                        return `id=${item.trim()}`;
-                    } else {
-                        return `username_like=${item.trim()}`;
-                    }
-                }).join('&');
-                const response = await customFetch.get(`/users?${searchArray}`);
+                const response = await customFetch.get(`/users?${searchUserBy(searchTerm)}`);
                 const data = response.data;
-                console.log(data);
                 setUsers(data);
                 setIsError(false);
             } catch (error) {
@@ -52,18 +45,8 @@ export const Sidebar = () => {
                 />
             </form>
             <p className="sidebar__title">Результаты</p>
-            {isError ? (
-                <p className="sidebar__subtitle">Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.</p>
-            ) : searchTerm === '' ? (
-                <p className="sidebar__subtitle">начните поиск</p>
-            ) : (
-                users.length < 1 ? (
-                    <p className="sidebar__subtitle">не найдено</p>
-                ) :
-                    isLoading ? <Loader /> : users.map((user) => {
-                        return <p key={user.id}>{user.username}</p>
-                    })
-            )}
+
+            <UsersList loading={isLoading} error={isError} users={users} searchTerm={searchTerm} />
         </aside>
     )
 }
