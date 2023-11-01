@@ -1,12 +1,25 @@
-import { Navbar } from "./components/Navbar/Navbar";
-import { Dashboard } from "./components/Dashboard/Dashboard";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Layout } from "./pages/Layout";
+import { UserInfo } from "./components/Dashboard/components/UserInfo/UserInfo";
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        path: '/users/:id',
+        element: <UserInfo />
+      }
+    ]
+  }
+])
 
 const App = () => {
   return (
     <div className="application">
       <div className="container">
-        <Navbar />
-        <Dashboard />
+        <RouterProvider router={router} />
       </div>
     </div>
   )

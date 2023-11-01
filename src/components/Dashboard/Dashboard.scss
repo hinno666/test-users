@@ -50,9 +50,22 @@
             .sidebar__user:hover .sidebar__user-info {
                 background-color: $lightGrey;
             }
+            .sidebar__user.active .sidebar__user-info {
+                background-color: $lightGrey;
+            }
         }
     }
-    .user {
+    .dashboard__user {
         padding: 25px;
+        .dashboard__user-info {
+            display: flex;
+            .dashboard__title {
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 140%;
+                margin-bottom: 15px;
+            }
+        }
     }
 }
