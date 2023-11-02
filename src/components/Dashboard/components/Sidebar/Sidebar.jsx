@@ -2,16 +2,20 @@ import { useEffect, useState } from "react";
 import { customFetch } from "../../../../utils/utils";
 import { UsersList } from "./UsersList";
 import { searchUserBy } from "../../helpers/SearchUserBy";
+import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [users, setUsers] = useState([])
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
+    const navigate = useNavigate();
 
-    const handleInputChange = (event) => {
+    const onSerachtermChange = (event) => {
         setSearchTerm(event.target.value);
+
+        navigate("/");
     };
 
     useEffect(() => {
@@ -41,7 +45,7 @@ export const Sidebar = () => {
                     placeholder="Введите id или имя"
                     type="text"
                     value={searchTerm}
-                    onChange={handleInputChange}
+                    onChange={onSerachtermChange}
                 />
             </form>
             <p className="sidebar__title">Результаты</p>

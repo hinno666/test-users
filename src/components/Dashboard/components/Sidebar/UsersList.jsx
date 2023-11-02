@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom"
 import { Loader } from "../../../Loader/Loader"
 import { User } from "./User"
 
@@ -22,7 +23,11 @@ export const UsersList = ({ loading, error, users, searchTerm }) => {
     return (
         <ul className="sidebar__users">
             {users.map((user) => {
-                return <User key={user.id} {...user} />
+                return (
+                    <NavLink key={user.id} to={`users/${user.id}`}>
+                        <User {...user} />
+                    </NavLink>
+                )
             })}
         </ul>
     )
