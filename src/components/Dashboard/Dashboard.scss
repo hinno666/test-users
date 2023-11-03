@@ -1,15 +1,18 @@
 @import "../../index.scss";
 
 .dashboard {
-    background-color: $bgContent;
     box-shadow: $boxShadow;
     border-radius: $borderRadius;
     min-height: 525px;
     display: flex;
     .sidebar {
         position: relative;
-        border-right: 1px solid #e0e0e0;
+        border-right: 1px solid $lightGrey;
         padding: 25px;
+        min-width: 400px;
+        background-color: $bgContent;
+        // max-height: 250px;
+        // overflow: auto;
         .sidebar__title {
             font-size: 16px;
             font-style: normal;
@@ -45,27 +48,74 @@
                     transition: 0.3s ease-in-out;
                     padding: 20px;
                     width: 100%;
+                    .sidebar__user-name {
+                        font-weight: 600;
+                    }
                 }
             }
-            .sidebar__user:hover .sidebar__user-info {
+            .sidebar__user-link:hover .sidebar__user-info {
                 background-color: $lightGrey;
             }
-            .sidebar__user.active .sidebar__user-info {
+            .sidebar__user-link.active .sidebar__user-info {
                 background-color: $lightGrey;
             }
         }
+        @media (max-width: 780px) {
+            border-bottom: 1px solid $lightGrey;
+        }
     }
     .dashboard__user {
+        flex: auto;
+        .dashboard__user-center {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            place-items: center;
+        }
+        .dashboard__user-text {
+            color: $grey;
+            margin-bottom: 10px;
+            span {
+                color: $black;
+                margin-right: 5px;
+                font-weight: 600;
+            }
+        }
         padding: 25px;
         .dashboard__user-info {
             display: flex;
-            .dashboard__title {
+            gap: 60px;
+            .dashboard__user-img {
+                flex: auto;
+                img {
+                    max-width: 100%;
+                }
+            }
+            .dashboard__user-name,
+            .dashboard__user-subtitle {
+                color: $black;
                 font-size: 16px;
                 font-style: normal;
                 font-weight: 600;
                 line-height: 140%;
-                margin-bottom: 15px;
+                margin: 20px 0;
+            }
+            .dashboard__user-about {
+                flex: 1 1 50%;
             }
         }
+        @media (max-width: 1200px) {
+            .dashboard__user-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    }
+}
+
+@media (max-width: 780px) {
+    .dashboard {
+        flex-direction: column;
+        gap: 10px;
     }
 }

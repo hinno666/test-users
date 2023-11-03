@@ -3,6 +3,7 @@ import { customFetch } from "../../../../utils/utils";
 import { UsersList } from "./UsersList";
 import { searchUserBy } from "../../helpers/SearchUserBy";
 import { useNavigate } from "react-router-dom";
+import { useDebounce } from "../../../hooks/useDebounce";
 
 export const Sidebar = () => {
 
@@ -10,9 +11,12 @@ export const Sidebar = () => {
     const [users, setUsers] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [isError, setIsError] = useState(false)
+
+    const debouncedSearch = useDebounce(searchTerm);
+
     const navigate = useNavigate();
 
-    const onSerachtermChange = (event) => {
+    const onSearchTermChange = (event) => {
         setSearchTerm(event.target.value);
 
         navigate("/");
@@ -22,7 +26,7 @@ export const Sidebar = () => {
         const searchUsers = async () => {
             try {
                 setIsLoading(true);
-                const response = await customFetch.get(`/users?${searchUserBy(searchTerm)}`);
+                const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 3)}`);
                 const data = response.data;
                 setUsers(data);
                 setIsError(false);
@@ -34,7 +38,7 @@ export const Sidebar = () => {
         }
 
         searchUsers();
-    }, [searchTerm])
+    }, [debouncedSearch])
 
     return (
         <aside className="dashboard__aside sidebar">
@@ -45,7 +49,7 @@ export const Sidebar = () => {
                     placeholder="Введите id или имя"
                     type="text"
                     value={searchTerm}
-                    onChange={onSerachtermChange}
+                    onChange={onSearchTermChange}
                 />
             </form>
             <p className="sidebar__title">Результаты</p>

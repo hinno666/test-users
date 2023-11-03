@@ -6,6 +6,16 @@
   box-sizing: border-box;
 }
 
+$boxShadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+$borderRadius: 10px;
+$bgContent: #fdfdfd;
+$lightGrey: #e0e0e0;
+$red: #e31f24;
+$black: #333;
+$white: #fff;
+$grey: #76787d;
+$borderColor: #e0e0e0;
+
 html,
 body,
 ul,
@@ -15,15 +25,10 @@ ol {
   list-style: none;
 }
 
-$boxShadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-$borderRadius: 10px;
-$bgContent: #fdfdfd;
-$lightGrey: #e0e0e0;
-$red: #e31f24;
-$black: #000;
-$white: #fff;
-$grey: #76787d;
-$borderColor: #e0e0e0;
+a {
+  text-decoration: none;
+  color: $black;
+}
 
 ::placeholder {
   font-family: Montserrat;
