@@ -28,7 +28,7 @@ export const UserInfo = () => {
 
     return (
         <div className="dashboard__user user">
-            <UserInfoItem  user={user} loading={isLoading} error={isError} />
+            <UserInfoItem user={user} loading={isLoading} error={isError} />
         </div>
     )
 }

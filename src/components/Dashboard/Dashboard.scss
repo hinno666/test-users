@@ -1,7 +1,6 @@
 @import "../../index.scss";
 
 .dashboard {
-    background-color: $bgContent;
     box-shadow: $boxShadow;
     border-radius: $borderRadius;
     min-height: 525px;
@@ -10,6 +9,10 @@
         position: relative;
         border-right: 1px solid $lightGrey;
         padding: 25px;
+        min-width: 400px;
+        background-color: $bgContent;
+        // max-height: 250px;
+        // overflow: auto;
         .sidebar__title {
             font-size: 16px;
             font-style: normal;

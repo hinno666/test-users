@@ -20,12 +20,13 @@ export const UsersList = ({ loading, error, users, searchTerm }) => {
         return <p className="sidebar__subtitle">не найдено</p>
     }
 
+
     return (
         <div className="sidebar__users">
             {users.map((user) => {
                 return (
                     <NavLink className='sidebar__user-link' key={user.id} to={`users/${user.id}`}>
-                        <User {...user} />
+                        <User username={user.username} email={user.email} />
                     </NavLink>
                 )
             })}
