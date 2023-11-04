@@ -62,7 +62,12 @@
         }
         @media (max-width: 780px) {
             border-bottom: 1px solid $lightGrey;
+            min-width: 320px;
         }
+    }
+    .dashboard__aside {
+        max-height: 225px;
+        overflow: auto;
     }
     .dashboard__user {
         flex: auto;

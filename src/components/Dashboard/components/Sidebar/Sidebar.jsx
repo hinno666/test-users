@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { customFetch } from "../../../../utils/utils";
 import { UsersList } from "./UsersList";
 import { searchUserBy } from "../../helpers/SearchUserBy";
@@ -40,8 +40,34 @@ export const Sidebar = () => {
         searchUsers();
     }, [debouncedSearch])
 
+    const [currentPage, setCurrentPage] = useState(1)
+    const sidebarRef = useRef();
+
+    const fetchData = async () => {
+        if (isLoading) return;
+        setIsLoading(true);
+        try {
+            const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 3, currentPage)}`);
+            const data = response.data;
+            setUsers((prevItems) => [...prevItems, ...data]);
+            setCurrentPage((prevPage) => prevPage + 1);
+            setIsError(false);
+        } catch (error) {
+            setIsError(true);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+    const handleScroll = () => {
+        const { scrollTop, clientHeight, scrollHeight } =
+            sidebarRef.current;
+        if (scrollTop + clientHeight >= scrollHeight - 20) {
+            fetchData();
+        }
+    }
+
     return (
-        <aside className="dashboard__aside sidebar">
+        <aside ref={sidebarRef} onScroll={handleScroll} className="dashboard__aside sidebar">
             <p className="sidebar__title">Поиск сотрудников</p>
             <form className="sidebar__form">
                 <input
