@@ -4,9 +4,9 @@ import { User } from "./User"
 
 export const UsersList = ({ loading, error, users, searchTerm }) => {
 
-    if (loading) {
-        return <Loader />
-    }
+    // if (loading) {
+    //     return <Loader />
+    // }
 
     if (error) {
         return <p className="sidebar__subtitle">Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.</p>

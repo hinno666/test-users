@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { customFetch } from "../../../../utils/utils";
 import { UsersList } from "./UsersList";
 import { searchUserBy } from "../../helpers/SearchUserBy";
@@ -9,24 +9,24 @@ export const Sidebar = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [users, setUsers] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const [isError, setIsError] = useState(false)
-
+    const [currentPage, setCurrentPage] = useState(2)
+    const sidebarRef = useRef();
     const debouncedSearch = useDebounce(searchTerm);
 
     const navigate = useNavigate();
 
     const onSearchTermChange = (event) => {
         setSearchTerm(event.target.value);
-
         navigate("/");
     };
 
     useEffect(() => {
-        const searchUsers = async () => {
+        (async () => {
             try {
                 setIsLoading(true);
-                const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 3)}`);
+                const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 4)}`);
                 const data = response.data;
                 setUsers(data);
                 setIsError(false);
@@ -35,28 +35,31 @@ export const Sidebar = () => {
             } finally {
                 setIsLoading(false);
             }
-        }
+        })()
 
-        searchUsers();
     }, [debouncedSearch])
-
-    const [currentPage, setCurrentPage] = useState(1)
-    const sidebarRef = useRef();
 
     const fetchData = async () => {
         if (isLoading) return;
+        if (searchTerm.split(",").some((item) => !isNaN(+item))) {
+            return
+        }
         setIsLoading(true);
         try {
-            const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 3, currentPage)}`);
+            const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 4, currentPage)}`);
             const data = response.data;
-            setUsers((prevItems) => [...prevItems, ...data]);
-            setCurrentPage((prevPage) => prevPage + 1);
+            if (data.length) {
+                setUsers((prevItems) => [...prevItems, ...data]);
+                setCurrentPage((prevPage) => prevPage + 1);
+                console.log(data);
+            }
             setIsError(false);
         } catch (error) {
             setIsError(true);
         } finally {
             setIsLoading(false);
         }
+
     }
     const handleScroll = () => {
         const { scrollTop, clientHeight, scrollHeight } =
