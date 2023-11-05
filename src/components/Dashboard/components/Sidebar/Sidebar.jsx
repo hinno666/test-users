@@ -19,6 +19,7 @@ export const Sidebar = () => {
 
     const onSearchTermChange = (event) => {
         setSearchTerm(event.target.value);
+        setCurrentPage(2)
         navigate("/");
     };
 
@@ -26,7 +27,7 @@ export const Sidebar = () => {
         (async () => {
             try {
                 setIsLoading(true);
-                const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 4)}`);
+                const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 3)}`);
                 const data = response.data;
                 setUsers(data);
                 setIsError(false);
@@ -39,14 +40,16 @@ export const Sidebar = () => {
 
     }, [debouncedSearch])
 
+
+
     const fetchData = async () => {
+        setIsLoading(true);
         if (isLoading) return;
         if (searchTerm.split(",").some((item) => !isNaN(+item))) {
             return
         }
-        setIsLoading(true);
         try {
-            const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 4, currentPage)}`);
+            const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 3, currentPage)}`);
             const data = response.data;
             if (data.length) {
                 setUsers((prevItems) => [...prevItems, ...data]);
