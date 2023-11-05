@@ -12,22 +12,26 @@ export const Sidebar = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [isError, setIsError] = useState(false)
     const [currentPage, setCurrentPage] = useState(2)
+    const [isEnd, setIsEnd] = useState(false);
     const sidebarRef = useRef();
     const debouncedSearch = useDebounce(searchTerm);
 
     const navigate = useNavigate();
 
+    const numberChecker = searchTerm.split(",").some((item) => !isNaN(+item));
+
     const onSearchTermChange = (event) => {
         setSearchTerm(event.target.value);
-        setCurrentPage(2)
         navigate("/");
+        setCurrentPage(2);
+        setIsEnd(false);
     };
 
     useEffect(() => {
         (async () => {
             try {
                 setIsLoading(true);
-                const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 3)}`);
+                const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 4)}`);
                 const data = response.data;
                 setUsers(data);
                 setIsError(false);
@@ -41,20 +45,20 @@ export const Sidebar = () => {
     }, [debouncedSearch])
 
 
-
     const fetchData = async () => {
         setIsLoading(true);
         if (isLoading) return;
-        if (searchTerm.split(",").some((item) => !isNaN(+item))) {
+        if (numberChecker) {
             return
         }
         try {
-            const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 3, currentPage)}`);
+            const response = await customFetch.get(`/users?${searchUserBy(debouncedSearch, 4, currentPage)}`);
             const data = response.data;
             if (data.length) {
                 setUsers((prevItems) => [...prevItems, ...data]);
                 setCurrentPage((prevPage) => prevPage + 1);
-                console.log(data);
+            } else {
+                setIsEnd(true);
             }
             setIsError(false);
         } catch (error) {
@@ -67,13 +71,13 @@ export const Sidebar = () => {
     const handleScroll = () => {
         const { scrollTop, clientHeight, scrollHeight } =
             sidebarRef.current;
-        if (scrollTop + clientHeight >= scrollHeight - 20) {
+        if (scrollTop + clientHeight >= scrollHeight - 20 && !isEnd && !numberChecker) {
             fetchData();
         }
     }
 
     return (
-        <aside ref={sidebarRef} onScroll={handleScroll} className="dashboard__aside sidebar">
+        <aside className="dashboard__aside sidebar">
             <p className="sidebar__title">Поиск сотрудников</p>
             <form className="sidebar__form">
                 <input
@@ -86,7 +90,7 @@ export const Sidebar = () => {
             </form>
             <p className="sidebar__title">Результаты</p>
 
-            <UsersList loading={isLoading} error={isError} users={users} searchTerm={searchTerm} />
+            <UsersList handleScroll={handleScroll} sidebarRef={sidebarRef} loading={isLoading} error={isError} users={users} searchTerm={searchTerm} />
         </aside>
     )
 }

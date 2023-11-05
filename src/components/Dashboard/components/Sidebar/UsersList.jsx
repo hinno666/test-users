@@ -2,11 +2,7 @@ import { NavLink } from "react-router-dom"
 import { Loader } from "../../../Loader/Loader"
 import { User } from "./User"
 
-export const UsersList = ({ loading, error, users, searchTerm }) => {
-
-    // if (loading) {
-    //     return <Loader />
-    // }
+export const UsersList = ({ loading, error, users, searchTerm, sidebarRef, handleScroll  }) => {
 
     if (error) {
         return <p className="sidebar__subtitle">Произошла ошибка при загрузке данных. Пожалуйста, попробуйте еще раз.</p>
@@ -16,13 +12,12 @@ export const UsersList = ({ loading, error, users, searchTerm }) => {
         return <p className="sidebar__subtitle">начните поиск</p>
     }
 
-    if (users.length < 1) {
+    if (users.length < 1 && !loading) {
         return <p className="sidebar__subtitle">не найдено</p>
     }
 
-
     return (
-        <div className="sidebar__users">
+        <div className="sidebar__users" ref={sidebarRef} onScroll={handleScroll} >
             {users.map((user) => {
                 return (
                     <NavLink className='sidebar__user-link' key={user.id} to={`users/${user.id}`}>
@@ -30,6 +25,6 @@ export const UsersList = ({ loading, error, users, searchTerm }) => {
                     </NavLink>
                 )
             })}
-        </div>
+            {loading && <Loader />}</div>
     )
 }

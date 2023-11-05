@@ -36,6 +36,9 @@
             display: flex;
             flex-direction: column;
             row-gap: 15px;
+            max-height: 300px;
+            overflow: auto;
+            padding: 10px;
             .sidebar__user {
                 cursor: pointer;
                 display: flex;
@@ -60,15 +63,24 @@
                 background-color: $lightGrey;
             }
         }
+        .sidebar__users::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar__users::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .sidebar__users::-webkit-scrollbar-thumb {
+            background-color: $red;
+            border-radius: 50px;
+        }
         @media (max-width: 780px) {
             border-bottom: 1px solid $lightGrey;
             min-width: 320px;
         }
     }
-    .dashboard__aside {
-        max-height: 225px;
-        overflow: auto;
-    }
+
     .dashboard__user {
         flex: auto;
         .dashboard__user-center {
